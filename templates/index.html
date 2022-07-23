@@ -22,7 +22,7 @@
     </tr>
       <tr>
         <td>All</td>
-        <td><input type="range" min="0" max="255" value="0" name="AllRng" class="slider" id="AllRng"  oninput="RangesyncAll()" onchange="ButtonOnAnimation('AllRng')"></td>
+        <td><input type="range" min="0" max="255" value="{{v['AllRng']}}" name="AllRng" class="slider" id="AllRng"  oninput="RangesyncAll()" onchange="ButtonOnAnimation('AllRng')" onchange="submit()"></td>
         <td><button type="button" id="AllRngBtnOn" onclick="RangeFuncAll('on')">On</button>&nbsp<button type="button" id="AllRngBtnOff" onclick="RangeFuncAll('off')" >Off</button></td>
       </tr>
       <tr>
