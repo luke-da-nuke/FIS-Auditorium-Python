@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request,  url_for, redirect
 app = Flask(__name__)                                               #creates the flask webapp
+import serial
+ser = serial.Serial('COM7', 9600, bytesize=serial.SEVENBITS ,parity=serial.PARITY_EVEN, stopbits=serial.STOPBITS_ONE)
 app.secret_key = "some highway in america or smth"                  #for secure transfer
 brights = {                                                         #dictionary that stores brightness value of each light section from 0-255
     "AllRng" : None,                                                #all only needs to be used for remembering the value on the webpage, not for changing the lights as the other values are automatically updated by Ruben's js
