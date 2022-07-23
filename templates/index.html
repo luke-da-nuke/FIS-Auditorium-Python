@@ -26,7 +26,7 @@
     </tr>
     <tr>
       <td>Gallery</td>
-      <td><input type="range" min="0" max="255" value="50" name="GallaryRnga" class="slider" id="GallaryRng"></td>
+      <td><input type="range" min="0" max="255" value="50" name="GallaryRng" class="slider" id="GallaryRng"></td>
       <td><button type="button" id="GallaryRngBtnOn" onclick="RangeFunc('GallaryRng', 'GallaryRngBtnOn', 'GallaryRngBtnOff', 'on')" >On</button>&nbsp<button type="button" id="GallaryRngBtnOff" onclick="RangeFunc('GallaryRng', 'GallaryRngBtnOff', 'GallaryRngBtnOn', 'off')" >Off</button></td>
     </tr>
     <tr>
@@ -51,27 +51,7 @@
 <input type="range" min="0" max="255" value="50" name="AllRng" class="slider" id="AllRng"  > -->
 <h2> Send a compliment </h2>
 <form method="post" action="/add-compliment" class="main-form" id="compliment-form">
-    <div class="form-row">
-      <label for="to">
-        Number to compliment
-        <input type="tel" placeholder="+15550123456" name="to" />
-      </label>
-      <label for="sender">
-        Your Name
-        <input type="text" placeholder="Jane" name="sender"  />
-      </label>
-    </div>
-    <div class="form-row">
-      <label for="receiver">
-        Person to compliment
-        <input type="text" placeholder="Sally" name="receiver" />
-      </label>
-      <span class="float-text">is</span>
-      <label for="compliment">
-        Your compliment
-        <input type="text" placeholder="an amazing person!" name="compliment" />
-      </label>
-    </div>
+  <input type="range" min="0" max="255" value="50" name="GallaryRng" class="slider" onchange="submit()"/>
 </form>
 <p style="text-align: center; margin-bottom: 10px;">By Luke, Ruben & Raine&emsp;FIS Media</p>
 

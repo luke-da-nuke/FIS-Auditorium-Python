@@ -1,7 +1,9 @@
-from flask import Flask, render_template, request, url_for, redirect
+from flask import Flask, render_template, request,  url_for, redirect
 app = Flask(__name__)
+app.secret_key = "ssssh don't tell anyone"
+
 brights = {
-    "gallery" : None,
+    "GallaryRng" : None,
     "front" : None,
     "back" : None,
     "stage" : None
@@ -25,6 +27,12 @@ def slider():
     print("test")
     print(received_data)
     return received_data
+
+@app.route("/add-compliment", methods=["POST"])
+def add_compliment():
+    brights["GallaryRng"] = request.values.get('GallaryRng')
+    print("value:  "+ brights["GallaryRng"])
+    return redirect(url_for('home'))
 #do something
 # @app.route("/test", methods=["POST","GET"])
 # def test():

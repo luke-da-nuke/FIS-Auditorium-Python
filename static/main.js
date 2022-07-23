@@ -1,9 +1,10 @@
 var allids = ["AllRng", "GallaryRng", "PublicFRng", "PublicBRng", "StageRng"] //All HTML group id's
 var allBtnOnID = ["AllRngBtnOn", "GallaryRngBtnOn", "PublicFRngBtnOn", "PublicBRngBtnOn", "StageRngBtnOn"]
 var allBtnOffID = ["AllRngBtnOff", "GallaryRngBtnOff", "PublicFRngBtnOff", "PublicBRngBtnOff", "StageRngBtnOff"]
-  function testt(){
-    console.log("test test");
-  }
+  function submit(){
+    document.getElementById("compliment-form").submit();
+  };
+
   function RangeFunc(id, btnID, OppositebtnID, state) { //func for changing slider value when pressing btn| state = on/off
     var slider = document.getElementById(id);
     if (state == "on"){
@@ -40,12 +41,14 @@ var allBtnOffID = ["AllRngBtnOff", "GallaryRngBtnOff", "PublicFRngBtnOff", "Publ
   function RangesyncAll(){ //Syncs all sliders to 'all' slider
     AllSlider = document.getElementById("AllRng")
     i = 0
-    http.open('POST', 'http://127.0.0.1:5000/slider_update')
-    http.send(AllSlider.value)
-    console.log(AllSlider.value)
+    // http.open('POST', 'http://127.0.0.1:5000/slider_update')
+    // http.send(AllSlider.value)
+    // console.log(AllSlider.value)
     while (allids.length > i){
       x = document.getElementById(allids[i])
       x.value = AllSlider.value
       i++
     }
   }
+
+  
