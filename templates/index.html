@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Auditorium Controls</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="https://www.fis.edu/uploaded/themes/default_20/images/fis_favicon.ico">
+  <meta name="description" content="The control page for the lighting in the FIS Auditorium">
+  <meta name="keywords" content="Auditorium, FIS, Frankfurt International School, lights, control">
+  <link href="{{url_for('static', filename = 'styles.css')}}" rel="stylesheet">
+  <script src="{{url_for('static', filename = 'main.js')}}"></script>
+
+<html>
+<table>
+  <colgroup>
+    <col span="1" style="width: 110px">
+    <col span="1" style="width: auto">
+    <col span="1" style="width: 135px;">
+  </colgroup>
+  <tr>
+    <td colspan="3"><img src="https://www.fis.edu/uploaded/themes/default_20/images/main_logo.svg" alt="FIS Logo" style="height:60px;"></td>
+  </tr>
+    <tr>
+      <td>All</td>
+      <td><input type="range" min="0" max="255" value="{{c}}" name="AllRng" class="slider" id="AllRng"  oninput="RangesyncAll()" onchange="ButtonOnAnimation('AllRng')"></td>
+      <td><button type="button" id="AllRngBtnOn" onclick="RangeFuncAll('on')">On</button>&nbsp<button type="button" id="AllRngBtnOff" onclick="RangeFuncAll('off')" >Off</button></td>
+    </tr>
+    <tr>
+      <td>Gallery</td>
+      <td><input type="range" min="0" max="255" value="50" name="GallaryRnga" class="slider" id="GallaryRng"></td>
+      <td><button type="button" id="GallaryRngBtnOn" onclick="RangeFunc('GallaryRng', 'GallaryRngBtnOn', 'GallaryRngBtnOff', 'on')" >On</button>&nbsp<button type="button" id="GallaryRngBtnOff" onclick="RangeFunc('GallaryRng', 'GallaryRngBtnOff', 'GallaryRngBtnOn', 'off')" >Off</button></td>
+    </tr>
+    <tr>
+      <td>Public Front</td>
+      <td><input type="range" min="0" max="255" value="50" name="name_of_slider" class="slider" id="PublicFRng"></td>
+      <td><button type="button" id="PublicFRngBtnOn" onclick="RangeFunc('PublicFRng', 'PublicFRngBtnOn', 'PublicFRngBtnOff', 'on')">On</button>&nbsp<button type="button" id="PublicFRngBtnOff" onclick="RangeFunc('PublicFRng', 'PublicFRngBtnOff', 'PublicFRngBtnOn', 'off')">Off</button></td>
+    </tr>
+    <tr>
+      <td>Public Back</td>
+      <td><input type="range" min="0" max="255" value="50" name="name_of_slider" class="slider" id="PublicBRng"></td>
+      <td><button type="button" id="PublicBRngBtnOn" onclick="RangeFunc('PublicBRng', 'PublicBRngBtnOn', 'PublicBRngBtnOff', 'on')">On</button>&nbsp<button type="button" id="PublicBRngBtnOff" onclick="RangeFunc('PublicBRng', 'PublicBRngBtnOff', 'PublicBRngBtnOn', 'off')">Off</button></td>
+    </tr>
+    <tr>
+      <td>Stage</td>
+      <td><input type="range" min="0" max="255" value="50" name="name_of_slider" class="slider" id="StageRng"></td>
+      <td><button type="button" id="StageRngBtnOn" onclick="RangeFunc('StageRng', 'StageRngBtnOn', 'StageRngBtnOff', 'on')">On</button>&nbsp<button type="button" id="StageRngBtnOff" onclick="RangeFunc('StageRng', 'StageRngBtnOff', 'StageRngBtnOn', 'off')">Off</button></td>
+    </tr> 
+</table>
+<!-- 
+<input type="submit" value="VALUE1" name="action1" form="my_form"/>
+<input type="submit" value="VALUE2" name="action2" form="my_form"/>
+<input type="range" min="0" max="255" value="50" name="AllRng" class="slider" id="AllRng"  > -->
+<h2> Send a compliment </h2>
+<form method="post" action="/add-compliment" class="main-form" id="compliment-form">
+    <div class="form-row">
+      <label for="to">
+        Number to compliment
+        <input type="tel" placeholder="+15550123456" name="to" />
+      </label>
+      <label for="sender">
+        Your Name
+        <input type="text" placeholder="Jane" name="sender"  />
+      </label>
+    </div>
+    <div class="form-row">
+      <label for="receiver">
+        Person to compliment
+        <input type="text" placeholder="Sally" name="receiver" />
+      </label>
+      <span class="float-text">is</span>
+      <label for="compliment">
+        Your compliment
+        <input type="text" placeholder="an amazing person!" name="compliment" />
+      </label>
+    </div>
+</form>
+<p style="text-align: center; margin-bottom: 10px;">By Luke, Ruben & Raine&emsp;FIS Media</p>
+
+</html>
