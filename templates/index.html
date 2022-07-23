@@ -10,49 +10,50 @@
   <script src="{{url_for('static', filename = 'main.js')}}"></script>
 
 <html>
-<table>
-  <colgroup>
-    <col span="1" style="width: 110px">
-    <col span="1" style="width: auto">
-    <col span="1" style="width: 135px;">
-  </colgroup>
-  <tr>
-    <td colspan="3"><img src="https://www.fis.edu/uploaded/themes/default_20/images/main_logo.svg" alt="FIS Logo" style="height:60px;"></td>
-  </tr>
+<form method="post" action="/slider_update" class="main-form" id="slider-form">
+  <table>
+    <colgroup>
+      <col span="1" style="width: 110px">
+      <col span="1" style="width: auto">
+      <col span="1" style="width: 135px;">
+    </colgroup>
     <tr>
-      <td>All</td>
-      <td><input type="range" min="0" max="255" value="{{c}}" name="AllRng" class="slider" id="AllRng"  oninput="RangesyncAll()" onchange="ButtonOnAnimation('AllRng')"></td>
-      <td><button type="button" id="AllRngBtnOn" onclick="RangeFuncAll('on')">On</button>&nbsp<button type="button" id="AllRngBtnOff" onclick="RangeFuncAll('off')" >Off</button></td>
+      <td colspan="3"><img src="https://www.fis.edu/uploaded/themes/default_20/images/main_logo.svg" alt="FIS Logo" style="height:60px;"></td>
     </tr>
-    <tr>
-      <td>Gallery</td>
-      <td><input type="range" min="0" max="255" value="50" name="GallaryRng" class="slider" id="GallaryRng"></td>
-      <td><button type="button" id="GallaryRngBtnOn" onclick="RangeFunc('GallaryRng', 'GallaryRngBtnOn', 'GallaryRngBtnOff', 'on')" >On</button>&nbsp<button type="button" id="GallaryRngBtnOff" onclick="RangeFunc('GallaryRng', 'GallaryRngBtnOff', 'GallaryRngBtnOn', 'off')" >Off</button></td>
-    </tr>
-    <tr>
-      <td>Public Front</td>
-      <td><input type="range" min="0" max="255" value="50" name="name_of_slider" class="slider" id="PublicFRng"></td>
-      <td><button type="button" id="PublicFRngBtnOn" onclick="RangeFunc('PublicFRng', 'PublicFRngBtnOn', 'PublicFRngBtnOff', 'on')">On</button>&nbsp<button type="button" id="PublicFRngBtnOff" onclick="RangeFunc('PublicFRng', 'PublicFRngBtnOff', 'PublicFRngBtnOn', 'off')">Off</button></td>
-    </tr>
-    <tr>
-      <td>Public Back</td>
-      <td><input type="range" min="0" max="255" value="50" name="name_of_slider" class="slider" id="PublicBRng"></td>
-      <td><button type="button" id="PublicBRngBtnOn" onclick="RangeFunc('PublicBRng', 'PublicBRngBtnOn', 'PublicBRngBtnOff', 'on')">On</button>&nbsp<button type="button" id="PublicBRngBtnOff" onclick="RangeFunc('PublicBRng', 'PublicBRngBtnOff', 'PublicBRngBtnOn', 'off')">Off</button></td>
-    </tr>
-    <tr>
-      <td>Stage</td>
-      <td><input type="range" min="0" max="255" value="50" name="name_of_slider" class="slider" id="StageRng"></td>
-      <td><button type="button" id="StageRngBtnOn" onclick="RangeFunc('StageRng', 'StageRngBtnOn', 'StageRngBtnOff', 'on')">On</button>&nbsp<button type="button" id="StageRngBtnOff" onclick="RangeFunc('StageRng', 'StageRngBtnOff', 'StageRngBtnOn', 'off')">Off</button></td>
-    </tr> 
-</table>
+      <tr>
+        <td>All</td>
+        <td><input type="range" min="0" max="255" value="0" name="AllRng" class="slider" id="AllRng"  oninput="RangesyncAll()" onchange="ButtonOnAnimation('AllRng')"></td>
+        <td><button type="button" id="AllRngBtnOn" onclick="RangeFuncAll('on')">On</button>&nbsp<button type="button" id="AllRngBtnOff" onclick="RangeFuncAll('off')" >Off</button></td>
+      </tr>
+      <tr>
+        <td>Gallery</td>
+        <td><input type="range" min="0" max="255" value="{{v['GallaryRng']}}" name="GallaryRng" class="slider" id="GallaryRng" onchange="submit()"></td>
+        <td><button type="button" id="GallaryRngBtnOn" onclick="RangeFunc('GallaryRng', 'GallaryRngBtnOn', 'GallaryRngBtnOff', 'on')" >On</button>&nbsp<button type="button" id="GallaryRngBtnOff" onclick="RangeFunc('GallaryRng', 'GallaryRngBtnOff', 'GallaryRngBtnOn', 'off')" >Off</button></td>
+      </tr>
+      <tr>
+        <td>Public Front</td>
+        <td><input type="range" min="0" max="255" value="{{v['PublicFRng']}}" name="PublicFRng" class="slider" id="PublicFRng" onchange="submit()"></td>
+        <td><button type="button" id="PublicFRngBtnOn" onclick="RangeFunc('PublicFRng', 'PublicFRngBtnOn', 'PublicFRngBtnOff', 'on')">On</button>&nbsp<button type="button" id="PublicFRngBtnOff" onclick="RangeFunc('PublicFRng', 'PublicFRngBtnOff', 'PublicFRngBtnOn', 'off')">Off</button></td>
+      </tr>
+      <tr>
+        <td>Public Back</td>
+        <td><input type="range" min="0" max="255" value="{{v['PublicBRng']}}" name="PublicBRng" class="slider" id="PublicBRng" onchange="submit()"></td>
+        <td><button type="button" id="PublicBRngBtnOn" onclick="RangeFunc('PublicBRng', 'PublicBRngBtnOn', 'PublicBRngBtnOff', 'on')">On</button>&nbsp<button type="button" id="PublicBRngBtnOff" onclick="RangeFunc('PublicBRng', 'PublicBRngBtnOff', 'PublicBRngBtnOn', 'off')">Off</button></td>
+      </tr>
+      <tr>
+        <td>Stage</td>
+        <td><input type="range" min="0" max="255" value="{{v['StageRng']}}" name="StageRng" class="slider" id="StageRng" onchange="submit()"></td>
+        <td><button type="button" id="StageRngBtnOn" onclick="RangeFunc('StageRng', 'StageRngBtnOn', 'StageRngBtnOff', 'on')">On</button>&nbsp<button type="button" id="StageRngBtnOff" onclick="RangeFunc('StageRng', 'StageRngBtnOff', 'StageRngBtnOn', 'off')">Off</button></td>
+      </tr> 
+  </table>
+</form>
 <!-- 
 <input type="submit" value="VALUE1" name="action1" form="my_form"/>
 <input type="submit" value="VALUE2" name="action2" form="my_form"/>
 <input type="range" min="0" max="255" value="50" name="AllRng" class="slider" id="AllRng"  > -->
-<h2> Send a compliment </h2>
-<form method="post" action="/add-compliment" class="main-form" id="compliment-form">
-  <input type="range" min="0" max="255" value="50" name="GallaryRng" class="slider" onchange="submit()"/>
-</form>
+
+  <!-- <input type="range" min="0" max="255" value="50" name="GallaryRng" class="slider" onchange="submit()"/> -->
+
 <p style="text-align: center; margin-bottom: 10px;">By Luke, Ruben & Raine&emsp;FIS Media</p>
 
 </html>
