@@ -43,6 +43,24 @@ def login_is_required(function):
 
     return wrapper
 
+def admin_is_required(function):
+    def wrappers(*args, **kwargs):
+        if "google_id" in session:
+            if session['email'] in emails.keys():
+                if emails[session['email']]=="admin" or emails[session['email']]=="user":
+                    if emails[session['email']]=="admin":
+                        return function()
+                    else:
+                        return "not admin"
+                else:
+                    return "email not on whitelist1"
+            else:
+                return "email not in dict1"
+        else:
+            return redirect("/login")
+
+    return wrappers
+
 # google = oauth.register(
 #     name='google',
 #     client_id='860548542804-9l1h6o8frp2aoeclk6994gs4ej7rjluh.apps.googleusercontent.com',
@@ -82,6 +100,11 @@ def home():
     # print (email)
     print(json.dumps(session, indent = 4))                           #prints current user info
     return render_template('index.html',v=brights)                   #renders index.html and parses the dictionary to be used in the {{}} things
+
+@app.route("/admin") 
+@admin_is_required                                                     #creates main page at ./ and names it home
+def adminpage():
+    return render_template('admin.html')                   #renders admin.html
 
 @app.route("/login")
 def login():
