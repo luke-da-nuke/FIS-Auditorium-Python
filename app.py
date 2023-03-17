@@ -25,7 +25,7 @@ os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 flow = Flow.from_client_secrets_file(
     client_secrets_file=client_secrets_file,
     scopes=["https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email", "openid"],
-    redirect_uri="http://127.0.0.1:5000/callback"
+    redirect_uri="http://10.97.0.14.nip.io:5000/callback"
 )
 
 def login_is_required(function):
@@ -86,11 +86,16 @@ brights = {                                                          #dictionary
 emails = {
     "luke_plastow@fis.edu" : "admin",
     "randomPerson@fis.edu" : None,
-    "luke.caspian.plastow@gmail.com" : "user"
+    "luke.caspian.plastow@gmail.com" : "user",
+    "julius_ulbrich@fis.edu":"user",
+    "ruben_mihm@fis.edu" : "admin",
+    "sebastian_bruch@fis.edu" : "user"
 }
+input="I1"
+output="O1"
 
 # import serial                                                       
-# ser = serial.Serial('COM2', 9600, bytesize=serial.SEVENBITS ,parity=serial.PARITY_EVEN, stopbits=serial.STOPBITS_ONE, write_timeout=5)
+# ser = serial.Serial('COM5', 9600, bytesize=serial.EIGHTBITS ,parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, write_timeout=5)
 # print(ser.name)
 
 @app.route("/")                                                      #creates main page at ./ and names it home
@@ -98,7 +103,7 @@ emails = {
 def home():
     # email=dict(session).get('email',None)
     # print (email)
-    print(json.dumps(session, indent = 4))                           #prints current user info
+    # print(json.dumps(session, indent = 4))                           #prints current user info
     return render_template('index.html',v=brights)                   #renders index.html and parses the dictionary to be used in the {{}} things
 
 @app.route("/admin") 
@@ -150,8 +155,21 @@ def logout():
 def slider_update():
     for x in brights:
         brights[x] = request.values.get(x)
-        print(debugtxt.format("Slider",x,brights[x]))
+        # print(debugtxt.format("Slider",x,brights[x]))
         # ser.write(b'test')
+    return redirect("/")
+
+@app.route("/io", methods=['POST'])
+def io():
+    global input, output
+    for i in range (1,10):
+        if request.form.get("i")==str(i):
+            input="I"+str(i)
+            print(input)
+        elif request.form.get("o")==str(i):
+            output="O"+str(i)
+            print("C"+input+output+"T")
+            ser.write(("C"+input+output+"T").encode())
     return redirect("/")
 
 @app.route("/api/<string:keyIn>/<int:brightIn>/")                   #API to interface with Bitfocus (streamdeck thing)
