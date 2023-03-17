@@ -25,7 +25,7 @@ os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 flow = Flow.from_client_secrets_file(
     client_secrets_file=client_secrets_file,
     scopes=["https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email", "openid"],
-    redirect_uri="http://10.97.0.14.nip.io:5000/callback"
+    redirect_uri="http://10.97.0.14.nip.io/callback"
 )
 
 def login_is_required(function):
@@ -184,4 +184,4 @@ def api(keyIn, brightIn):
 
 if __name__ == '__main__':
     # run app in debug mode on port 5000
-    app.run(debug=True, port=5000, host='0.0.0.0')
+    app.run(debug=True, port=80, host='0.0.0.0')
