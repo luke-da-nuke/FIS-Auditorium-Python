@@ -95,7 +95,7 @@ input="I1"
 output="O1"
 
 import serial                                                       
-ser = serial.Serial('/tty/ttyACM0', 9600, bytesize=serial.EIGHTBITS ,parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, write_timeout=5)
+ser = serial.Serial('/dev/ttyACM0', 9600, bytesize=serial.EIGHTBITS ,parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, write_timeout=5)
 print(ser.name)
 
 @app.route("/")                                                      #creates main page at ./ and names it home
