@@ -25,7 +25,7 @@ os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 flow = Flow.from_client_secrets_file(
     client_secrets_file=client_secrets_file,
     scopes=["https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email", "openid"],
-    redirect_uri="http://10.97.0.15.nip.io/callback"
+    redirect_uri="http://10.96.0.15.nip.io/callback"
 )
 
 def login_is_required(function):
@@ -61,19 +61,6 @@ def admin_is_required(function):
 
     return wrappers
 
-# google = oauth.register(
-#     name='google',
-#     client_id='860548542804-9l1h6o8frp2aoeclk6994gs4ej7rjluh.apps.googleusercontent.com',
-#     client_secret='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',
-#     access_token_url='https://accounts.google.com/o/oauth2/token',
-#     access_token_params=None,
-#     authorize_url='https://accounts.google.com/o/oauth2/auth',
-#     authorize_params=None,
-#     api_base_url='https://www.googleapis.com/oauth2/v1/',
-#     userinfo_endpoint='https://openidconnect.googleapis.com/v1/userinfo',  # This is only needed if using openId to fetch user info
-#     client_kwargs={'scope': 'openid email profile'},
-# )
-
 debugtxt = "{}:  the value of {} is {}"                              #for formatting strings
 brights = {                                                          #dictionary that stores brightness value of each light section from 0-255
     "AllRng" : None,                                                 #all only needs to be used for remembering the value on the webpage, not for changing the lights as the other values are automatically updated by Ruben's js
@@ -89,7 +76,9 @@ emails = {
     "luke.caspian.plastow@gmail.com" : "user",
     "julius_ulbrich@fis.edu":"user",
     "ruben_mihm@fis.edu" : "admin",
-    "sebastian_bruch@fis.edu" : "user"
+    "sebastian_bruch@fis.edu" : "admin",
+    "fistvmedia@fis.edu":"user",
+    "fistvmedia@gmail.com":"user"
 }
 input="I1"
 output="O1"
@@ -183,5 +172,4 @@ def api(keyIn, brightIn):
         return "invalid:   " + keyIn + str(brightIn)
 
 if __name__ == '__main__':
-    # run app in debug mode on port 5000
     app.run(debug=True, port=80, host='0.0.0.0')
