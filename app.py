@@ -17,7 +17,7 @@ oauth = OAuth(app)
 
 app.secret_key = "some highway in america or smth"                   #for secure transfer
 
-GOOGLE_CLIENT_ID = 
+GOOGLE_CLIENT_ID = "416292616621-e22ail8cbl0d3noh8luc8fmgj02nhr1e.apps.googleusercontent.com"
 client_secrets_file = os.path.join(pathlib.Path(__file__).parent, "client_secret.json")
 
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
