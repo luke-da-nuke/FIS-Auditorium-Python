@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head>
+
   <title>Auditorium Controls</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/x-icon" href="https://www.fis.edu/uploaded/themes/default_20/images/fis_favicon.ico">
@@ -55,29 +55,48 @@
 <form method="post" action="/io">
   <table>
     <tr>
-      <td><button value="1" name="i">Floorbox 1</button></td>
-      <td><button value="2" name="i">Floorbox 2</button></td>
-      <td><button value="3" name="i">Floorbox 3</button></td>
-      <td><button value="4" name="i">Podium 4</button></td>
-      <td><button value="5" name="i">Input 5</button></td>
+      <td>Inputs:</td>
+      <td><button value="1" name="i">1. Podium</button></td>
+      <td><button value="2" name="i">2. Lighting Desk</button></td>
+      <td><button value="3" name="i">3. Camera</button></td>
+      <td><button value="4" name="i">4. Camera</button></td>
+      <!-- <td><button value="5" name="i">Input 5</button></td>
       <td><button value="6" name="i">Input 6</button></td>
       <td><button value="7" name="i">Input 7</button></td>
       <td><button value="8" name="i">Input 8</button></td>
-      <td><button value="9" name="i">Tech Laptop 9</button></td>
+      <td><button value="9" name="i">Tech Laptop 9</button></td> -->
     </tr>
     <tr>
-      <td><button value="1" name="o">Projector  1</button></td>
-      <td><button value="2" name="o">Output 2</button></td>
-      <td><button value="3" name="o">Output 3</button></td>
-      <td><button value="4" name="o">Output 4</button></td>
-      <td><button value="5" name="o">Output 5</button></td>
+      <td>Outputs:</td>
+      <td><button value="1" name="o">1. Projector</button></td>
+      <td><button value="2" name="o">2. TV</button></td>
+      <td><button value="3" name="o">3. Additional</button></td>
+      <td><button value="4" name="o">4. Additional</button></td>
+      <!-- <td><button value="5" name="o">Output 5</button></td>
       <td><button value="6" name="o">Output 6</button></td>
       <td><button value="7" name="o">Output 7</button></td>
       <td><button value="8" name="o">Output 8</button></td>
-      <td><button value="9" name="o">Output 9</button></td>
+      <td><button value="9" name="o">Output 9</button></td> -->
     </tr>
   </table>
 </form>
+<form method="post" action="/pj">
+  <table>
+    <tr>
+      <td>Projector Controls:</td>
+      <td><button value="On" name="pj">On</button></td>
+      <td><button value="Off" name="pj">Off</button></td>
+      <td><button value="Freeze" name="pj">Freeze</button></td>
+      <td><button value="AV" name="pj">AV Mute</button></td>
+      <!-- <td><button value="5" name="o">Output 5</button></td>
+      <td><button value="6" name="o">Output 6</button></td>
+      <td><button value="7" name="o">Output 7</button></td>
+      <td><button value="8" name="o">Output 8</button></td>
+      <td><button value="9" name="o">Output 9</button></td> -->
+    </tr>
+  </table>
+</form>
+
 
 <!-- 
 <input type="submit" value="VALUE1" name="action1" form="my_form"/>
@@ -86,6 +105,6 @@
 
   <!-- <input type="range" min="0" max="255" value="50" name="GallaryRng" class="slider" onchange="submit()"/> -->
 
-<p style="text-align: center; margin-bottom: 10px;">By Luke, Ruben & Raine&emsp;FIS Media</p>
+<p style="text-align: center; margin-bottom: 10px;">By Luke, Raine & Yuna&emsp;FIS Media</p>
 
 </html>
