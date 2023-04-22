@@ -15,7 +15,7 @@ PJ_IP = '10.96.0.77'
 PJ_PORT = 3629
 pj=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 pj.connect((PJ_IP, PJ_PORT))
-pj.send('45 53 43 2F 56 50 2E 6E 65 74 10 03 00 00 00 00')
+pj.send(bytes.fromhex('45 53 43 2F 56 50 2E 6E 65 74 10 03 00 00 00 00'))
 
 app = Flask(__name__)                                                #creates the flask webapp
 oauth = OAuth(app)
