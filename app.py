@@ -1,4 +1,3 @@
-#test
 import json
 import pathlib
 from google_auth_oauthlib.flow import Flow
@@ -9,8 +8,14 @@ import requests
 from google.oauth2 import id_token
 from pip._vendor import cachecontrol
 import google.auth.transport.requests
+import requests
+import socket
 
-
+PJ_IP = '10.96.0.77'
+PJ_PORT = 3629
+pj=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+pj.connect((PJ_IP, PJ_PORT))
+pj.send('45 53 43 2F 56 50 2E 6E 65 74 10 03 00 00 00 00')
 
 app = Flask(__name__)                                                #creates the flask webapp
 oauth = OAuth(app)
@@ -26,7 +31,7 @@ os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 flow = Flow.from_client_secrets_file(
     client_secrets_file=client_secrets_file,
     scopes=["https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email", "openid"],
-    redirect_uri="http://10.96.0.15.nip.io/callback"
+    redirect_uri="http://127.0.0.1/callback"
 )
 
 def login_is_required(function):
@@ -71,6 +76,15 @@ brights = {                                                          #dictionary
     "StageRng" : None
 }
 
+bitfocusMatrixButtons = [
+    [2,3,4,5],
+    [10,11,12,13],
+    [18,19,20,21],
+    [26,27,28,29]
+]
+
+bitfocusMatrixPage=10
+
 emails = {
     "luke_plastow@fis.edu" : "admin",
     "randomPerson@fis.edu" : None,
@@ -85,8 +99,8 @@ input="I1"
 output="O1"
 
 import serial                                                       
-ser = serial.Serial('/dev/ttyACM0', 9600, bytesize=serial.EIGHTBITS ,parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, write_timeout=5)
-print(ser.name)
+# ser = serial.Serial('/dev/ttyACM0', 9600, bytesize=serial.EIGHTBITS ,parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, write_timeout=5)
+# print(ser.name)
 
 @app.route("/")                                                      #creates main page at ./ and names it home
 @login_is_required
@@ -145,7 +159,7 @@ def logout():
 def slider_update():
     for x in brights:
         brights[x] = request.values.get(x)
-        # print(debugtxt.format("Slider",x,brights[x]))
+        print(debugtxt.format("Slider",x,brights[x]))
         # ser.write(b'test')
     return redirect("/")
 
@@ -154,12 +168,23 @@ def io():
     global input, output
     for i in range (1,10):
         if request.form.get("i")==str(i):
-            input="I"+str(i)
+            input=i
             print(input)
         elif request.form.get("o")==str(i):
-            output="O"+str(i)
-            print("C"+input+output+"T")
-            ser.write(("C"+input+output+"T").encode())
+            output=i
+            # print("CI"+input+"O"+output+"T")
+            # ser.write(("C"+input+output+"T").encode())
+            print("/"+str(bitfocusMatrixPage)+"/"+str(bitfocusMatrixButtons[input-1][output-1]))
+            requests.get('http://127.0.0.1:8888/press/bank'+"/"+str(bitfocusMatrixPage)+"/"+str(bitfocusMatrixButtons[input-1][output-1]))
+    return redirect("/")
+
+@app.route("/pj", methods=['POST'])
+def pj():
+    if request.form.get("pj")=='On':
+        pj.send('')
+        print("on")
+    else:
+        print("no")
     return redirect("/")
 
 @app.route("/api/<string:keyIn>/<int:brightIn>/")                   #API to interface with Bitfocus (streamdeck thing)
