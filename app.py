@@ -13,9 +13,9 @@ import socket
 
 PJ_IP = '10.96.0.77'
 PJ_PORT = 3629
-pj=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-pj.connect((PJ_IP, PJ_PORT))
-pj.send(bytes.fromhex('45 53 43 2F 56 50 2E 6E 65 74 10 03 00 00 00 00'))
+pjs=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+pjs.connect((PJ_IP, PJ_PORT))
+pjs.send(bytes.fromhex('45 53 43 2F 56 50 2E 6E 65 74 10 03 00 00 00 00'))
 
 app = Flask(__name__)                                                #creates the flask webapp
 oauth = OAuth(app)
@@ -136,7 +136,9 @@ def callback():
     id_info = id_token.verify_oauth2_token(
         id_token=credentials._id_token,
         request=token_request,
-        audience=GOOGLE_CLIENT_ID
+        audience=GOOGLE_CLIENT_ID,
+        clock_skew_in_seconds=1
+
     )
 
     session["google_id"] = id_info.get("sub")
@@ -180,11 +182,9 @@ def io():
 
 @app.route("/pj", methods=['POST'])
 def pj():
-    if request.form.get("pj")=='On':
-        pj.send('')
-        print("on")
-    else:
-        print("no")
+    a = str(request.form.get("pj"))
+    pjs.send(bytes.fromhex(a.encode('utf-8').hex()+" 0d"))
+    print("pj "+a)
     return redirect("/")
 
 @app.route("/api/<string:keyIn>/<int:brightIn>/")                   #API to interface with Bitfocus (streamdeck thing)
@@ -199,3 +199,4 @@ def api(keyIn, brightIn):
 
 if __name__ == '__main__':
     app.run(debug=True, port=80, host='0.0.0.0')
+    
