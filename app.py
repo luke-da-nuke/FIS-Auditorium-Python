@@ -13,9 +13,8 @@ import socket
 
 PJ_IP = '10.96.0.77'
 PJ_PORT = 3629
-pjs=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-pjs.connect((PJ_IP, PJ_PORT))
-pjs.send(bytes.fromhex('45 53 43 2F 56 50 2E 6E 65 74 10 03 00 00 00 00'))
+
+
 
 app = Flask(__name__)                                                #creates the flask webapp
 oauth = OAuth(app)
@@ -31,7 +30,7 @@ os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 flow = Flow.from_client_secrets_file(
     client_secrets_file=client_secrets_file,
     scopes=["https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email", "openid"],
-    redirect_uri="http://127.0.0.1/callback"
+    redirect_uri="http://10.96.0.13.nip.io/callback"
 )
 
 def login_is_required(function):
@@ -183,7 +182,12 @@ def io():
 @app.route("/pj", methods=['POST'])
 def pj():
     a = str(request.form.get("pj"))
+    pjs=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    pjs.connect((PJ_IP, PJ_PORT))
+    pjs.send(bytes.fromhex('45 53 43 2F 56 50 2E 6E 65 74 10 03 00 00 00 00'))
     pjs.send(bytes.fromhex(a.encode('utf-8').hex()+" 0d"))
+    pjs.shutdown(1)
+    pjs.close()
     print("pj "+a)
     return redirect("/")
 
@@ -199,4 +203,3 @@ def api(keyIn, brightIn):
 
 if __name__ == '__main__':
     app.run(debug=True, port=80, host='0.0.0.0')
-    
