@@ -97,8 +97,10 @@ emails = {
 input="I1"
 output="O1"
 
-import serial                                                       
-# ser = serial.Serial('/dev/ttyACM0', 9600, bytesize=serial.EIGHTBITS ,parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, write_timeout=5)
+import serial     
+arduino = serial.Serial(port='COM4', baudrate=115200, timeout=.1)
+
+# lights = serial.Serial('/dev/ttyACM0', 9600, bytesize=serial.EIGHTBITS ,parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, write_timeout=5)
 # print(ser.name)
 
 @app.route("/")                                                      #creates main page at ./ and names it home
@@ -182,13 +184,16 @@ def io():
 @app.route("/pj", methods=['POST'])
 def pj():
     a = str(request.form.get("pj"))
-    pjs=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    pjs.connect((PJ_IP, PJ_PORT))
-    pjs.send(bytes.fromhex('45 53 43 2F 56 50 2E 6E 65 74 10 03 00 00 00 00'))
-    pjs.send(bytes.fromhex(a.encode('utf-8').hex()+" 0d"))
-    pjs.shutdown(1)
-    pjs.close()
-    print("pj "+a)
+    if a=="Screen":
+        arduino.write(bytes(a, 'utf-8'))
+    else:
+        pjs=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        pjs.connect((PJ_IP, PJ_PORT))
+        pjs.send(bytes.fromhex('45 53 43 2F 56 50 2E 6E 65 74 10 03 00 00 00 00'))
+        pjs.send(bytes.fromhex(a.encode('utf-8').hex()+" 0d"))
+        pjs.shutdown(1)
+        pjs.close()
+        print("pj "+a)
     return redirect("/")
 
 @app.route("/api/<string:keyIn>/<int:brightIn>/")                   #API to interface with Bitfocus (streamdeck thing)
