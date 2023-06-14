@@ -1,5 +1,6 @@
 import json
 import pathlib
+from threading import Timer
 from google_auth_oauthlib.flow import Flow
 from flask import Flask, abort, render_template, request,  url_for, redirect, session
 from authlib.integrations.flask_client import OAuth
@@ -11,10 +12,23 @@ import google.auth.transport.requests
 import requests
 import socket
 
+import serial     
+arduino = serial.Serial('COM21', 9600,  bytesize=serial.EIGHTBITS ,parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, write_timeout=5)
+import time
+arduino.close()
+
+
 PJ_IP = '10.96.0.77'
 PJ_PORT = 3629
 
+def update_data(interval):
+    arduino.open()
+    Timer(interval, update_data, [interval]).start()
+    global DATA
+    print(arduino.readline())
 
+# update data every second
+update_data(2)
 
 app = Flask(__name__)                                                #creates the flask webapp
 oauth = OAuth(app)
@@ -30,7 +44,7 @@ os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 flow = Flow.from_client_secrets_file(
     client_secrets_file=client_secrets_file,
     scopes=["https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email", "openid"],
-    redirect_uri="http://10.96.0.13.nip.io/callback"
+    redirect_uri="http://127.0.0.1/callback"
 )
 
 def login_is_required(function):
@@ -97,8 +111,6 @@ emails = {
 input="I1"
 output="O1"
 
-import serial     
-arduino = serial.Serial(port='COM4', baudrate=115200, timeout=.1)
 
 # lights = serial.Serial('/dev/ttyACM0', 9600, bytesize=serial.EIGHTBITS ,parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, write_timeout=5)
 # print(ser.name)
@@ -185,7 +197,12 @@ def io():
 def pj():
     a = str(request.form.get("pj"))
     if a=="Screen":
-        arduino.write(bytes(a, 'utf-8'))
+        arduino.open()
+        arduino.write(bytes("begin",'utf-8'))
+        time.sleep(2)
+        arduino.write(bytes("S",'utf-8'))
+        arduino.close()
+        print("hi")
     else:
         pjs=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         pjs.connect((PJ_IP, PJ_PORT))
