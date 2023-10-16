@@ -1,5 +1,6 @@
 import json
 import pathlib
+from threading import Timer
 from google_auth_oauthlib.flow import Flow
 from flask import Flask, abort, render_template, request,  url_for, redirect, session, send_file
 from authlib.integrations.flask_client import OAuth
@@ -18,7 +19,14 @@ PJ_mute=False
 PJ_freeze=False
 
 
+def update_data(interval):
+    arduino.open()
+    Timer(interval, update_data, [interval]).start()
+    global DATA
+    print(arduino.readline())
 
+# update data every second
+update_data(2)
 
 app = Flask(__name__)                                                #creates the flask webapp
 oauth = OAuth(app)
@@ -192,7 +200,12 @@ def pj():
     global PJ_state, PJ_mute, PJ_freeze
     a = str(request.form.get("pj"))
     if a=="Screen":
-        arduino.write(bytes(a, 'utf-8'))
+        arduino.open()
+        arduino.write(bytes("begin",'utf-8'))
+        time.sleep(2)
+        arduino.write(bytes("S",'utf-8'))
+        arduino.close()
+        print("hi")
     else:
         pjs=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         pjs.connect((PJ_IP, PJ_PORT))
