@@ -30,7 +30,7 @@ os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 flow = Flow.from_client_secrets_file(
     client_secrets_file=client_secrets_file,
     scopes=["https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email", "openid"],
-    redirect_uri="http://10.96.0.13.nip.io/callback"
+    redirect_uri="http://10.97.11.200.nip.io/callback"
 )
 
 def login_is_required(function):
