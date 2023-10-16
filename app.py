@@ -1,7 +1,7 @@
 import json
 import pathlib
 from google_auth_oauthlib.flow import Flow
-from flask import Flask, abort, render_template, request,  url_for, redirect, session
+from flask import Flask, abort, render_template, request,  url_for, redirect, session, send_file
 from authlib.integrations.flask_client import OAuth
 import os 
 import requests
@@ -11,8 +11,12 @@ import google.auth.transport.requests
 import requests
 import socket
 
-PJ_IP = '10.96.0.77'
+PJ_IP = '10.96.0.11'
 PJ_PORT = 3629
+PJ_state=False
+PJ_mute=False
+PJ_freeze=False
+
 
 
 
@@ -92,13 +96,15 @@ emails = {
     "ruben_mihm@fis.edu" : "admin",
     "sebastian_bruch@fis.edu" : "admin",
     "fistvmedia@fis.edu":"user",
+    "pete_sinclair@fis.edu":"user",
+    "alex_westcott@fis.edu":"user",
     "fistvmedia@gmail.com":"user"
 }
 input="I1"
 output="O1"
 
 import serial     
-arduino = serial.Serial(port='COM4', baudrate=115200, timeout=.1)
+arduino = serial.Serial(port='COM7', baudrate=9600, timeout=.1)
 
 # lights = serial.Serial('/dev/ttyACM0', 9600, bytesize=serial.EIGHTBITS ,parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, write_timeout=5)
 # print(ser.name)
@@ -183,17 +189,51 @@ def io():
 
 @app.route("/pj", methods=['POST'])
 def pj():
+    global PJ_state, PJ_mute, PJ_freeze
     a = str(request.form.get("pj"))
     if a=="Screen":
         arduino.write(bytes(a, 'utf-8'))
     else:
         pjs=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         pjs.connect((PJ_IP, PJ_PORT))
-        pjs.send(bytes.fromhex('45 53 43 2F 56 50 2E 6E 65 74 10 03 00 00 00 00'))
-        pjs.send(bytes.fromhex(a.encode('utf-8').hex()+" 0d"))
+        if a=="PWRToggle":
+            pjs.send(bytes.fromhex('45 53 43 2F 56 50 2E 6E 65 74 10 03 00 00 00 00'))
+            if PJ_state==True:
+                PJ_state=False
+                pjs.send(bytes.fromhex("PWR OFF".encode('utf-8').hex()+" 0d"))
+            else:
+                PJ_state=True
+                pjs.send(bytes.fromhex("PWR ON".encode('utf-8').hex()+" 0d"))
+        elif a=="AVToggle":
+            pjs.send(bytes.fromhex('45 53 43 2F 56 50 2E 6E 65 74 10 03 00 00 00 00'))
+            if PJ_mute==True:
+                PJ_mute=False
+                pjs.send(bytes.fromhex("MUTE OFF".encode('utf-8').hex()+" 0d"))
+            else:
+                PJ_mute=True
+                pjs.send(bytes.fromhex("MUTE ON".encode('utf-8').hex()+" 0d"))
+
+        elif a=="FreezeToggle":
+            pjs.send(bytes.fromhex('45 53 43 2F 56 50 2E 6E 65 74 10 03 00 00 00 00'))
+            if PJ_freeze==True:
+                PJ_freeze=False
+                pjs.send(bytes.fromhex("FREEZE OFF".encode('utf-8').hex()+" 0d"))
+            else:
+                PJ_freeze=True
+                pjs.send(bytes.fromhex("FREEZE ON".encode('utf-8').hex()+" 0d"))
+
+            # pjs.send(bytes.fromhex("PWR?".encode('utf-8').hex()+" 0d"))
+            # status=pjs.recv(18)
+            # # print(status)
+            # if status=="01" or status=="02":
+            #     pjs.send(bytes.fromhex("PWR OFF".encode('utf-8').hex()+" 0d"))
+            # else:
+            #     pjs.send(bytes.fromhex("PWR ON".encode('utf-8').hex()+" 0d"))
+        else:
+            pjs.send(bytes.fromhex('45 53 43 2F 56 50 2E 6E 65 74 10 03 00 00 00 00'))
+            pjs.send(bytes.fromhex(a.encode('utf-8').hex()+" 0d"))
         pjs.shutdown(1)
         pjs.close()
-        print("pj "+a)
     return redirect("/")
 
 @app.route("/api/<string:keyIn>/<int:brightIn>/")                   #API to interface with Bitfocus (streamdeck thing)
@@ -205,6 +245,28 @@ def api(keyIn, brightIn):
     else:
         print ("invalid")
         return "invalid:   " + keyIn + str(brightIn)
+    
+@app.route("/api/status/<string:command>/")
+def status(command):
+    global PJ_state, PJ_mute, PJ_freeze
+    pjs=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    pjs.connect((PJ_IP, PJ_PORT))
+    pjs.send(bytes.fromhex('45 53 43 2F 56 50 2E 6E 65 74 10 03 00 00 00 00'))
+    pjs.send(bytes.fromhex((command+"?").encode('utf-8').hex()+" 0d"))
+    pjs.recv(1024)
+    status=pjs.recv(6)
+    if command=="PWR":
+        if bytes(status)==bytes("PWR=01",'utf-8') or bytes(status)==bytes("PWR=02",'utf-8'):
+            PJ_state=True
+            return send_file("On.png", mimetype='image/gif')
+        else:
+            PJ_state=False
+            return send_file("Off.png", mimetype='image/gif')
+            # return status
+
+    print(status)
+    pjs.shutdown(1)
+    pjs.close()
 
 if __name__ == '__main__':
     app.run(debug=True, port=80, host='0.0.0.0')
