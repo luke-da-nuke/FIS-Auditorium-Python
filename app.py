@@ -1,6 +1,7 @@
 import json
 import pathlib
 from threading import Timer
+import time
 from google_auth_oauthlib.flow import Flow
 from flask import Flask, abort, render_template, request,  url_for, redirect, session, send_file
 from authlib.integrations.flask_client import OAuth
@@ -11,22 +12,16 @@ from pip._vendor import cachecontrol
 import google.auth.transport.requests
 import requests
 import socket
+import serial     
 
-PJ_IP = '10.96.0.11'
+
+PJ_IP = '10.96.0.5'
 PJ_PORT = 3629
 PJ_state=False
 PJ_mute=False
 PJ_freeze=False
 
-
-def update_data(interval):
-    arduino.open()
-    Timer(interval, update_data, [interval]).start()
-    global DATA
-    print(arduino.readline())
-
-# update data every second
-update_data(2)
+# arduino = serial.Serial(port='COM7', baudrate=9600, timeout=.1)
 
 app = Flask(__name__)                                                #creates the flask webapp
 oauth = OAuth(app)
@@ -111,8 +106,6 @@ emails = {
 input="I1"
 output="O1"
 
-import serial     
-arduino = serial.Serial(port='COM7', baudrate=9600, timeout=.1)
 
 # lights = serial.Serial('/dev/ttyACM0', 9600, bytesize=serial.EIGHTBITS ,parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE, write_timeout=5)
 # print(ser.name)
